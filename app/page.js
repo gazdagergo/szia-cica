@@ -1,17 +1,18 @@
 'use client'
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import Image from "next/image";
 
 export default function Home() {
+  const synth = useRef(null);
+
   useEffect(() => {
-    const voices = window.speechSynthesis.getVoices();
-    console.log(voices)
+    synth.current = new SpeechSynthesisUtterance();
+    synth.current.lang = 'hu-HU'
   }, []);
 
   const handleSpeechClick = () => {
-    let utterance = new SpeechSynthesisUtterance("Elmondom az ábécét. A, Á, B, C, CS, D, DZ, DZSÉ, E, É, F, G, GYÉ, H, I, Í, J, K, L, JÉ, M, N, ENNY, O, Ó, Ö, Ő, P, Q, R, S, ESSZ, T, TYÉ, U, Ú, Ü, Ű, V, W, Z, ZSÉ");
-    utterance.lang = 'hu-HU'
-    speechSynthesis.speak(utterance);
+    synth.current.text = "Elmondom az ábécét. A, Á, B, C, CS, D, DZ, DZSÉ, E, É, F, G, GYÉ, H, I, Í, J, K, L, JÉ, M, N, ENNY, O, Ó, Ö, Ő, P, Q, R, S, ESSZ, T, TYÉ, U, Ú, Ü, Ű, V, W, Z, ZSÉ";
+    speechSynthesis.speak(synth.current);
   }
 
   return (
