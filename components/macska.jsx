@@ -20,6 +20,7 @@ const initialState = {
 export default function Macska() {
   const synth = useRef(null);
   const [state, formAction] = useFormState(askGPT, initialState)
+  const [spaeking, setSpeaking] = useState(false)
 
   useEffect(() => {
     synth.current = new SpeechSynthesisUtterance();
@@ -35,13 +36,14 @@ export default function Macska() {
 
   useEffect(() => {
     speech(state)
+    setSpeaking(value)
     setValue('')
   }, [state]);
 
 
   return (
     <>
-      <Image src="/cica.jpg" alt="cica" width={543} height={360} />
+      <Image src={spaeking ? "/cica-talk.gif" : "/cica.jpg"} alt="cica" width={543} height={360} />
       <form action={formAction} className="w-full text-center">
         <Input name="question" value={value} onChange={({ target }) => setValue(target.value)} />
         <Submit className="border-2 border-gray-500 bg-gray-200 p-3">Kérdés küldése</Submit>
