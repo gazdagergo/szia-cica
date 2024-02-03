@@ -3,6 +3,8 @@ import {useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import {askGPT} from "@/functions/askGPT";
 import { experimental_useFormState as useFormState, experimental_useFormStatus as useFormStatus } from 'react-dom';
+import Head from "next/head";
+
 
 function Submit({ children, ...rest }) {
   const status = useFormStatus();
@@ -25,6 +27,9 @@ export default function Macska() {
   useEffect(() => {
     synth.current = new SpeechSynthesisUtterance();
     synth.current.lang = 'hu-HU'
+    synth.current.addEventListener("end", (event) => {
+      setSpeaking(false)
+    });
   }, []);
 
   const [value, setValue] = useState('')
@@ -43,6 +48,13 @@ export default function Macska() {
 
   return (
     <>
+      <Head>
+        <link
+          rel="preload"
+          href="/cica-talk.gif"
+          as="image"
+        />
+      </Head>
       <Image src={spaeking ? "/cica-talk.gif" : "/cica.jpg"} alt="cica" width={543} height={360} />
       <form action={formAction} className="w-full text-center">
         <Input name="question" value={value} onChange={({ target }) => setValue(target.value)} />
